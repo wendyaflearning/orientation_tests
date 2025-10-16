@@ -23,8 +23,7 @@ class Questions
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $order_index = null;
 
-    #[ORM\ManyToOne(inversedBy: 'questions')]
-    private ?MethodDimension $method_dimension = null;
+    
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
     private ?Tests $test = null;
@@ -61,17 +60,7 @@ class Questions
         return $this;
     }
 
-    public function getMethodDimension(): ?MethodDimension
-    {
-        return $this->method_dimension;
-    }
-
-    public function setMethodDimension(?MethodDimension $method_dimension): static
-    {
-        $this->method_dimension = $method_dimension;
-
-        return $this;
-    }
+    
 
     public function getTest(): ?Tests
     {
