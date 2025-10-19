@@ -20,9 +20,9 @@ class Scores
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $value = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Questions $question = null;
+    private ?MethodDimension $methodDimension = null;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
     #[ORM\JoinColumn(nullable: false)]
@@ -45,14 +45,14 @@ class Scores
         return $this;
     }
 
-    public function getQuestion(): ?Questions
+    public function getMethodDimension(): ?MethodDimension
     {
-        return $this->question;
+        return $this->methodDimension;
     }
 
-    public function setQuestion(Questions $question): static
+    public function setMethodDimension(MethodDimension $methodDimension): static
     {
-        $this->question = $question;
+        $this->methodDimension = $methodDimension;
 
         return $this;
     }

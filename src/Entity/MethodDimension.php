@@ -27,10 +27,17 @@ class MethodDimension
     #[ORM\ManyToOne(inversedBy: 'methodDimensions')]
     private ?Method $method = null;
 
+    /**
+     * @var Collection<int, Answers>
+     */
+    #[ORM\OneToMany(targetEntity: Answers::class, mappedBy: 'method_dimension')]
+    private Collection $answers;
+
     
 
     public function __construct()
     {
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,5 +79,34 @@ class MethodDimension
         $this->method = $method;
 
         return $this;
-    }    
+    }
+
+    /**
+     * @return Collection<int, Answers>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answers $answer): static
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setMethodDimension($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answers $answer): static
+    {
+        if ($this->answers->removeElement($answer)) {
+            if ($answer->getMethodDimension() === $this) {
+                $answer->setMethodDimension(null);
+            }
+        }
+
+        return $this;
+    }
 }

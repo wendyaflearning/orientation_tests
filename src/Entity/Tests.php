@@ -34,12 +34,16 @@ class Tests
     #[ORM\OneToMany(targetEntity: Questions::class, mappedBy: 'test')]
     private Collection $questions;
 
-    #[ORM\OneToOne(mappedBy: 'test', cascade: ['persist', 'remove'])]
-    private ?Sessions $sessions = null;
+    /**
+     * @var Collection<int, Sessions>
+     */
+    #[ORM\OneToMany(targetEntity: Sessions::class, mappedBy: 'test')]
+    private Collection $sessions;
 
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,24 +117,31 @@ class Tests
         return $this;
     }
 
-    public function getSessions(): ?Sessions
+    /**
+     * @return Collection<int, Sessions>
+     */
+    public function getSessions(): Collection
     {
         return $this->sessions;
     }
 
-    public function setSessions(?Sessions $sessions): static
+    public function addSession(Sessions $session): static
     {
-        // unset the owning side of the relation if necessary
-        if ($sessions === null && $this->sessions !== null) {
-            $this->sessions->setTest(null);
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
+            $session->setTest($this);
         }
 
-        // set the owning side of the relation if necessary
-        if ($sessions !== null && $sessions->getTest() !== $this) {
-            $sessions->setTest($this);
-        }
+        return $this;
+    }
 
-        $this->sessions = $sessions;
+    public function removeSession(Sessions $session): static
+    {
+        if ($this->sessions->removeElement($session)) {
+            if ($session->getTest() === $this) {
+                $session->setTest(null);
+            }
+        }
 
         return $this;
     }

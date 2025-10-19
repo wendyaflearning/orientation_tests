@@ -26,11 +26,17 @@ class Answers
 
     
 
-    #[ORM\OneToOne(inversedBy: 'answers', cascade: ['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?Questions $question = null;
 
-    #[ORM\OneToOne]
+    #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?MethodDimension $method_dimension = null;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private ?int $method_dimension_value = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
     
 
@@ -67,6 +73,30 @@ class Answers
     public function setMethodDimension(?MethodDimension $method_dimension): static
     {
         $this->method_dimension = $method_dimension;
+
+        return $this;
+    }
+
+    public function getMethodDimensionValue(): ?int
+    {
+        return $this->method_dimension_value;
+    }
+
+    public function setMethodDimensionValue(?int $method_dimension_value): static
+    {
+        $this->method_dimension_value = $method_dimension_value;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): static
+    {
+        $this->content = $content;
 
         return $this;
     }

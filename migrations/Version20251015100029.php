@@ -14,7 +14,7 @@ final class Version20251015100029 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Modifiying Answers entity to delete session_id property, Creating SessionsAnswers entites and deleting method dimension id in Questions entity';
     }
 
     public function up(Schema $schema): void

@@ -22,7 +22,7 @@ class Sessions
     #[ORM\Column(enumType: SessionsStatusEnum::class)]
     private ?SessionsStatusEnum $status = null;
 
-    #[ORM\OneToOne(inversedBy: 'sessions', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'sessions')]
     private ?Tests $test = null;
 
     #[ORM\ManyToOne(inversedBy: 'sessions')]
@@ -34,16 +34,12 @@ class Sessions
     #[ORM\OneToMany(targetEntity: Scores::class, mappedBy: 'session')]
     private Collection $scores;
 
-    /**
-     * @var Collection<int, Answers>
-     */
-    #[ORM\OneToMany(targetEntity: Answers::class, mappedBy: 'session')]
-    private Collection $answers;
+    
 
     public function __construct()
     {
         $this->scores = new ArrayCollection();
-        $this->answers = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -118,32 +114,20 @@ class Sessions
     }
 
     /**
-     * @return Collection<int, Answers>
+     * Retourne les scores de la session au format JSON
+     * Exemple: ["R" => 2, "I" => 7, "A" => 4, "S" => 0, "E" => 0, "C" => 2]
      */
-    public function getAnswers(): Collection
+    public function getScoresAsJson(): array
     {
-        return $this->answers;
-    }
-
-    public function addAnswer(Answers $answer): static
-    {
-        if (!$this->answers->contains($answer)) {
-            $this->answers->add($answer);
-            $answer->setSession($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnswer(Answers $answer): static
-    {
-        if ($this->answers->removeElement($answer)) {
-            // set the owning side to null (unless already changed)
-            if ($answer->getSession() === $this) {
-                $answer->setSession(null);
+        $result = [];
+        foreach ($this->scores as $score) {
+            $dimension = $score->getMethodDimension();
+            if ($dimension) {
+                $result[$dimension->getCode()] = $score->getValue();
             }
         }
-
-        return $this;
+        return $result;
     }
+
+    
 }
