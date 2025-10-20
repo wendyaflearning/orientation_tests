@@ -8,9 +8,11 @@ use App\Traits\Timestamps\TimestampsTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampsTrait;
     
@@ -30,6 +32,15 @@ class Users
 
     #[ORM\Column(enumType: UsersStatusEnum::class)]
     private ?UsersStatusEnum $status = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
+    /**
+     * @var array<string>
+     */
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     /**
      * @var Collection<int, Sessions>
@@ -123,5 +134,62 @@ class Users
         }
 
         return $this;
+    }
+
+    // Méthodes de UserInterface
+
+    /**
+     * Retourne l'identifiant unique de l'utilisateur (ici l'email)
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // Garantit que chaque utilisateur a au moins ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Méthode de PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Méthode pour effacer les données sensibles temporaires
+     * (utilisée par Symfony après l'authentification)
+     */
+    public function eraseCredentials(): void
+    {
+        // Si vous stockez des données temporaires sensibles, effacez-les ici
+        // Par exemple : $this->plainPassword = null;
     }
 }
