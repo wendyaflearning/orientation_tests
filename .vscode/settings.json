@@ -1,0 +1,28 @@
+{
+    "php.suggest.basic": false,
+    "php.validate.enable": false,
+    "php.executablePath": "/usr/local/opt/php@8.3/bin/php",
+    "intelephense.environment.phpVersion": "8.3.0",
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.files.associations": ["*.php"],
+    "intelephense.files.exclude": [
+      "**/vendor/**/{Tests,tests}/**",
+      "**/.git/**",
+      "**/node_modules/**"
+    ],
+    "intelephense.completion.insertUseDeclaration": true,
+    "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
+    "intelephense.completion.triggerParameterHints": true,
+    "intelephense.diagnostics.enable": true,
+    "files.associations": {
+      "*.php": "php"
+    },
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.tabCompletion": "off",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": false
+    }
+  }
