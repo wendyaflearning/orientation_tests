@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/users/{userId}', name: 'get_user_details', methods: ['GET'])]
+#[Route(path: '/api/users/{userId}', name: 'api_user_details', methods: ['GET'])]
 class GetUserDetailsAction extends AbstractController
 {
     public function __construct(
