@@ -18,9 +18,6 @@ class Feedbacks
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Users $candidate = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Sessions $session = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -43,16 +40,12 @@ class Feedbacks
         return $this->id;
     }
 
+    /**
+     * Retourne le candidat via la session
+     */
     public function getCandidate(): ?Users
     {
-        return $this->candidate;
-    }
-
-    public function setCandidate(?Users $candidate): static
-    {
-        $this->candidate = $candidate;
-
-        return $this;
+        return $this->session?->getCandidate();
     }
 
     public function getSession(): ?Sessions

@@ -39,8 +39,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var array<string>
      */
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    #[ORM\Column(type: 'json', options: ['default' => '["ROLE_USER"]'])]
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var Collection<int, Sessions>
@@ -153,9 +153,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // Garantit que chaque utilisateur a au moins ROLE_USER
-        $roles[] = 'ROLE_USER';
+        if (!in_array('ROLE_USER', $roles, true)) {
+            $roles[] = 'ROLE_USER';
+        }
 
-        return array_unique($roles);
+        return $roles;
     }
 
     /**

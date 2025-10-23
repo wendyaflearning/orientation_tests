@@ -23,7 +23,6 @@ class FeedbacksFixtures extends Fixture implements DependentFixtureInterface
 
         foreach($sessions as $session) {
             $scores = $session->getScoresAsJson();
-            $candidate = $session->getCandidate();
 
             if(empty($scores)) {
                 continue;
@@ -31,7 +30,6 @@ class FeedbacksFixtures extends Fixture implements DependentFixtureInterface
             $feedback = FeedbackTemplates::getFeedbackForDominantDimension($scores);
             $feedback = (new Feedbacks())
                 ->setSession($session)
-                ->setCandidate($candidate)
                 ->setLlmModel(self::LLM_MODEL)
                 ->setTokensConsumed(self::TOKENS_CONSUMED)
                 ->setGeneratedAt(new DateTimeImmutable())
