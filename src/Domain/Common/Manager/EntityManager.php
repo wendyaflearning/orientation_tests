@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User\Manager;
+namespace App\Domain\Common\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,5 +14,10 @@ class EntityManager
     {
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
+    }
+
+    public function findAll($class): array
+    {
+        return $this->entityManager->getRepository($class)->findAll();
     }
 }

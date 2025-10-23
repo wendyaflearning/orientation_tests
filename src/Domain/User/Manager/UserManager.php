@@ -4,6 +4,7 @@ namespace App\Domain\User\Manager;
 
 
 use App\Application\User\UserDetailsResponseDto;
+use App\Domain\Common\Manager\EntityManager;
 use App\Repository\UsersRepository;
 
 class UserManager extends EntityManager
