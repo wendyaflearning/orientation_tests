@@ -7,7 +7,6 @@ use App\Traits\Timestamps\TimestampsTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
- 
 
 #[ORM\Entity(repositoryClass: AnswersRepository::class)]
 class Answers
@@ -24,8 +23,6 @@ class Answers
     #[ORM\Column]
     private ?int $id = null;
 
-    
-
     #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?Questions $question = null;
 
@@ -38,8 +35,6 @@ class Answers
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
-    
-
     /**
      * @var Collection<int, SessionsAnswers>
      */
@@ -50,8 +45,6 @@ class Answers
     {
         return $this->id;
     }
-
-    
 
     public function getQuestion(): ?Questions
     {
@@ -100,8 +93,6 @@ class Answers
 
         return $this;
     }
-
-    
 
     /**
      * @return Collection<int, SessionsAnswers>
