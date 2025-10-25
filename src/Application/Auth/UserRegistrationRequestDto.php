@@ -20,10 +20,16 @@ class UserRegistrationRequestDto
     #[Assert\Positive]
     public int $age;
 
-    #[Assert\Length(min: 5, max: 8)]
+    #[Assert\NotBlank(
+        message: 'Le champ {{ property }} est obligatoire',
+    )]
+    #[Assert\Length(min: 8)]
+//    #[Assert\Regex(
+//        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/',
+//        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre'
+//    )]
     public string $password;
 
     public UsersStatusEnum $status;
 
-    public string $roles;
 }

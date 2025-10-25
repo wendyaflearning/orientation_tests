@@ -7,6 +7,7 @@ use App\Application\Auth\UserRegistrationResponseDto;
 use App\Domain\User\Manager\UserManager;
 use App\Entity\Users;
 use App\Enums\Users\UsersStatusEnum;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserRegistrationService
@@ -15,16 +16,26 @@ class UserRegistrationService
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly UserManager $userManager
     ) {}
-        public function register(UserRegistrationRequestDto $userRegistrationDto): UserRegistrationResponseDto
+
+    /**
+     * @throws \Exception
+     * @throws ORMException
+     */
+    public function register(UserRegistrationRequestDto $userRegistrationDto): UserRegistrationResponseDto
         {
+            $email = $userRegistrationDto->email;
+            $existingUser = $this->userManager->findByEmail($email);
+
+            if ($existingUser) {
+                throw new \InvalidArgumentException('Un utilisateur avec cet email existe déjà');
+            }
+
             $user = ((new Users())
                         ->setName($userRegistrationDto->name)
                         ->setEmail($userRegistrationDto->email)
                         ->setAge($userRegistrationDto->age)
                         ->setStatus(UsersStatusEnum::STUDENT)
                         ->setRoles(['ROLE_USER'])
-                        ->setCreatedAt(new \DateTimeImmutable())
-                        ->setUpdatedAt(new \DateTimeImmutable())
             );
 
             $hashPassword = $this->passwordHasher->hashPassword($user, $userRegistrationDto->password);

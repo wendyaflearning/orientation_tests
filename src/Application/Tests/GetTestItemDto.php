@@ -4,9 +4,10 @@ namespace App\Application\Tests;
 
 use App\Entity\Tests;
 
-class GetTestItemDto
+readonly class GetTestItemDto
 {
     public function __construct(
+        public int $id,
         public string $name,
         public string $description,
         public array $method
@@ -15,6 +16,7 @@ class GetTestItemDto
     public static function fromEntity(Tests $tests): GetTestItemDto
     {
         return new self(
+            id: $tests->getId(),
             name: $tests->getName(),
             description: $tests->getDescription(),
             method: $tests->getMethod() ? [

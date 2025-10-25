@@ -21,7 +21,6 @@ class GetUserDetailsAction extends AbstractController
         return $this->json(
             $userResponseDto,
             Response::HTTP_OK,
-            ['Content-Type' => 'application/json'],
             ['groups' => ['public']]
         );
     }

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Tests;
 
-use App\Application\Tests\GetTestsDto;
+use App\Application\Tests\GetTestsResponseDto;
 use App\Domain\Tests\Manager\TestManager;
 use App\Entity\Tests;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,12 +20,11 @@ class GetTestsAction extends AbstractController
     #[Route(path: '/api/tests', name: 'api_tests', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
-        $tests = $this->testManager->findAll(Tests::class);
+        $tests = $this->testManager->findAll();
 
         return $this->json(
-            GetTestsDto::fromArray($tests),
+            GetTestsResponseDto::fromArray($tests),
             Response::HTTP_OK,
-            ['Content-Type' => 'application/json']
         );
     }
 }

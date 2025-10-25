@@ -4,6 +4,7 @@ namespace App\Controller\Auth;
 
 use App\Application\Auth\UserRegistrationRequestDto;
 use App\Domain\User\Service\UserRegistrationService;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,9 @@ class PostRegisterAction extends AbstractController
     {}
 
     /**
+     * Register a new user
+     *
+     * @throws ORMException
      */
     public function __invoke(
         #[MapRequestPayload] UserRegistrationRequestDto $userRegistrationDto
@@ -29,7 +33,6 @@ class PostRegisterAction extends AbstractController
         return $this->json(
             $userResponseDto,
             Response::HTTP_CREATED,
-            ['Content-Type' => 'application/json'],
             ['groups' => ['public']]
         );
     }

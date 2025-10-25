@@ -15,7 +15,6 @@ class PostLogoutAction extends AbstractController
         return $this->json(
             ['message' => 'Success logout'],
             Response::HTTP_OK,
-            ['Content-Type' => 'application/json']
         );
     }
 }

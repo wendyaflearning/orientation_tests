@@ -4,8 +4,27 @@ namespace App\Domain\Tests\Manager;
 
 
 
-use App\Domain\Common\Manager\EntityManager;
+use App\Entity\Tests;
+use App\Repository\TestsRepository;
 
-class TestManager extends EntityManager
+readonly class TestManager
 {
+    public function __construct(
+        private TestsRepository $testsRepository,
+    )
+    {}
+
+    /**
+     * @return Tests[]
+     */
+    public function findAll(): array
+    {
+        $tests = $this->testsRepository->findAll();
+
+        if (!$tests) {
+            return [];
+        }
+
+        return $tests;
+    }
 }
